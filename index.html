@@ -2,13 +2,31 @@
 <head>
 <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="/js/mustache/mustache.js"></script>
+
+<script id="blog-template" type="text/template">
+  <span>{{posts_count}} posts</span>
+  {{#posts}}
+    <li>
+      <div>{{title}} ({{date_added}})</div>
+      <div>{{content}}</div>
+      <div>{{#meta.tags}}<li>{{.}}</li>{{/meta.tags}}</div>
+    </li>
+  {{/posts}}
+</script>
+
 <script>
 $(function() {
+  $.getJSON('/content/posts.json', function(data) {
+      var template = $('#blog-template').html();
+      var info = Mustache.to_html(template, data);
+      $('#blog-anchor').html(info);
+  });
   console.log("loaded!");
 });
 </script>
 </head>
 <body>
 Hello, World!
+<div id="blog-anchor"/>
 </body>
 </html>
