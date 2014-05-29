@@ -1,0 +1,14 @@
+{
+  "posts_count": 1,
+  "posts": [
+    {
+      "author": "dreamer-dead",
+      "date_added" : "29.05.2014",
+      "title": "Post 1",
+      "content": "Hello, World!",
+      "meta": {
+        "tags": ["post", "blog", "firsttry"]
+      }
+    }
+  ]
+}
