@@ -63,12 +63,14 @@ $(function() {
 
         fetchBranchCommits(branch, fetchCommitsCallback);
       }
+
+      githubBlog.fetchBranches(fetchBranchCallback);
     }
 
     githubBlog.fetch(fetchRepoCallback);
   }
   
-  fetchCommits();
+  fetchCommits("dreamer-dead", "dreamer-dead.github.io", "master");
 });
 </script>
 </head>
