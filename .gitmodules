@@ -4,6 +4,3 @@
 [submodule "js/oauth"]
 	path = js/oauth
 	url = https://github.com/oauth-io/oauth-js.git
-[submodule "js/gh3"]
-	path = js/gh3
-	url = https://github.com/k33g/gh3.git
