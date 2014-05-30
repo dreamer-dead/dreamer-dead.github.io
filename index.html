@@ -17,13 +17,58 @@
 </script>
 
 <script>
+function fetchBranchCommits(branch, callback) {
+  branch.commits = [];
+
+  Gh3.Helper.callHttpApi({
+    service : "repos/"+branch.user.login+"/"+branch.repositoryName+"/commits",
+    data : {sha: branch.sha },
+    success : function(res) {
+      _.each(res.data, function (commit) {
+        branch.commits.push(new Gh3.Commit(commit));
+      });
+      if (callback) callback(null, that);
+    },
+    error : function (res) {
+      if (callback) callback(new Error(res.responseJSON.message),res);
+    }
+  });
+}
+
 $(function() {
   $.getJSON('/content/posts.json', function(data) {
       var template = $('#blog-template').html();
       var info = Mustache.to_html(template, data);
       $('#blog-anchor').html(info);
   });
-  console.log("loaded!");
+
+  var fetchCommits = function (userName, repoName, branchName) {
+    var githubUser = new Gh3.User(userName);
+    var githubBlog = new Gh3.Repository(repoName, githubUser);
+    var fetchRepoCallback = function (err, res) {
+      if (err) throw "fetchRepo error!" + err;
+
+      console.log(githubBlog.full_name);
+      var fetchBranchCallback = function (err, res) {
+        if (err) throw "fetchBranch error!" + err;
+
+        var branch = githubBlog.getBranchByName(branchName);
+        console.log(branch.name + "(" + branch.sha + ")");
+        var fetchCommitsCallback = function (err, res) {
+          if (err) throw "fetchCommits error!" + err;
+
+          var commits = branch.commits;
+          console.log(commits);
+        }
+
+        fetchBranchCommits(branch, fetchCommitsCallback);
+      }
+    }
+
+    githubBlog.fetch(fetchRepoCallback);
+  }
+  
+  fetchCommits();
 });
 </script>
 </head>
