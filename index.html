@@ -52,7 +52,7 @@ $(function() {
           var commits = branch.commits;
           console.log(commits);
           var tree = [];
-          var fetchTreeNode = function(commit, err, res) {
+          var fetchTreeNode = function(treeCommit, err, res) {
             if (err) throw "fetchTreeNode error!" + err;
 
             var template = $('#post-template').html();
