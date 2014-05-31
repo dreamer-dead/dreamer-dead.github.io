@@ -490,6 +490,7 @@
       this.message = commitInfos.commit.message;
       this.sha = commitInfos.sha;
       this.url = commitInfos.url;
+      this.tree = commitInfos.tree;
     }
   },{});
 
@@ -638,6 +639,42 @@
 			return _.filter(this.contents, comparator);
 		}
 
+	},{});
+
+	Gh3.Tree = = Kind.extend({
+    constructor : function (repo, sha, url) {
+    	if (repo)
+    		this.repo = repo;
+
+    	if (sha)
+    		this.sha = sha;
+
+    	if (url)
+    		this.url = url;
+    },
+
+		fetchContents : function (callback) {
+			var that = this;
+			var service_path = that.url || "repos/"+that.repo.user.login.name+"/"+that.repo.name+"/git/trees/"+that.sha;
+
+			that.contents = [];
+			Gh3.Helper.callHttpApi({
+				service : service_path,
+				success : function(res) {
+					that.url = res.data.url;
+					that.sha = res.data.sha;
+					_.each(res.data.tree, function (item) {
+						if (item.type == "blob") that.contents.push(new Gh3.File(item, that.repo.user, that.repo.name, "_unknown_branch"));
+						if (item.type == "tree") that.contents.push(new Gh3.Tree(that.repo, item.sha, item.url));
+					});
+
+					if (callback) callback(null, that);
+				},
+				error : function (res) {
+					if (callback) callback(new Error(res.responseJSON.message),res);
+				}
+			});
+		}
 	},{});
 
 	Gh3.Branch = Gh3.CommitsSource.extend({
