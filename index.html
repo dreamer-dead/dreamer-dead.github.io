@@ -69,7 +69,7 @@ $(function() {
             var treeNode = new Gh3.Tree(githubBlog, commit.tree.sha);
             tree.push(treeNode);
             //treeNode.fetchContent(fetchTreeNode);
-            treeNode.fetchContent(function(err, res) {
+            treeNode.fetchContents(function(err, res) {
               fetchTreeNode(commit, err, res);
             });
           }
