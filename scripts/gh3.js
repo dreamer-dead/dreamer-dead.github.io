@@ -490,7 +490,7 @@
       this.message = commitInfos.commit.message;
       this.sha = commitInfos.sha;
       this.url = commitInfos.url;
-      this.tree = commitInfos.tree;
+      this.tree = commitInfos.commit.tree;
     }
   },{});
 
