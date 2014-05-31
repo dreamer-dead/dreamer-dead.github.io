@@ -51,27 +51,20 @@ $(function() {
 
           var commits = branch.commits;
           console.log(commits);
-          var tree = [];
-          var fetchTreeNode = function(treeCommit, err, res) {
-            if (err) throw "fetchTreeNode error!" + err;
+          var fetchCommitInfo = function(err, res) {
+            if (err) throw "fetchCommitInfo error!" + err;
 
             var template = $('#post-template').html();
             var data = {
-              title: treeCommit.message,
-              content: res.contents[0].path,
-              date_added: treeCommit.date
+              title: res.message,
+              content: res.files[0].filename,
+              date_added: res.date
             };
             var post = Mustache.to_html(template, data);
-            $("posts-anchor").append(post);
+            $("posts-anchor").append($(post));
           }
           if (commits.length > 0) {
-            var commit = commits[0];
-            var treeNode = new Gh3.Tree(githubBlog, commit.tree.sha);
-            tree.push(treeNode);
-            //treeNode.fetchContent(fetchTreeNode);
-            treeNode.fetchContents(function(err, res) {
-              fetchTreeNode(commit, err, res);
-            });
+            commits[0].fetchContents(fetchCommitInfo);
           }
         }
 
