@@ -477,6 +477,14 @@
 
 	},{});
 
+	Gh3.CommitFileInfo = Kind.extend({
+    constructor : function (fileInfo) {
+    	this.sha = fileInfo.sha;
+    	this.filename = fileInfo.filename;
+    	this.status = fileInfo.status;
+    	this.raw_url = fileInfo.raw_url;
+    }
+  },{});
 
 	Gh3.Commit = Kind.extend({
     constructor : function (commitInfos) {
@@ -491,7 +499,26 @@
       this.sha = commitInfos.sha;
       this.url = commitInfos.url;
       this.tree = commitInfos.commit.tree;
-    }
+    },
+    fetchContents : function (callback) {
+			var that = this;
+			that.files = [];
+
+			Gh3.Helper.callHttpApi({
+				service : that.url,
+				data : {},
+				success : function(res) {
+					that.stats = res.data.stats;
+					_.each(res.data.files, function (file) {
+						that.files.push(new Gh3.CommitFileInfo(file));
+					});
+					if (callback) callback(null, that);
+				},
+				error : function (res) {
+					if (callback) callback(new Error(res.responseJSON.message),res);
+				}
+			});
+		}
   },{});
 
 	Gh3.ItemContent = Kind.extend({
