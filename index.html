@@ -1,9 +1,9 @@
 <html>
 <head>
 <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
-<script src="/js/mustache/mustache.js"></script>
-<script src="/js/gh3/gh3.js"></script>
-<script src="/js/gh3/vendors/underscore-min.js"></script>
+<script src="/scripts/mustache.js"></script>
+<script src="/scripts/gh3.js"></script>
+<script src="/scripts/underscore-min.js"></script>
 
 <script id="blog-template" type="text/template">
   <span>{{posts_count}} posts</span>
@@ -61,7 +61,8 @@ $(function() {
           console.log(commits);
         }
 
-        fetchBranchCommits(branch, fetchCommitsCallback);
+        //fetchBranchCommits(branch, fetchCommitsCallback);
+        branch.fetchCommits(fetchCommitsCallback);
       }
 
       githubBlog.fetchBranches(fetchBranchCallback);
