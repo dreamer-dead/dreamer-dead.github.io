@@ -655,7 +655,7 @@
 
 		fetchContents : function (callback) {
 			var that = this;
-			var service_path = that.url || "repos/"+that.repo.user.login.name+"/"+that.repo.name+"/git/trees/"+that.sha;
+			var service_path = that.url || "repos/"+that.repo.user.login+"/"+that.repo.name+"/git/trees/"+that.sha;
 
 			that.contents = [];
 			Gh3.Helper.callHttpApi({
