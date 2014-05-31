@@ -64,8 +64,8 @@ $(function() {
             var post = Mustache.to_html(template, data);
             $("posts-anchor").append(post);
           }
-          for (id in commits) {
-            var commit = commits[id];
+          if (commits.length > 0)
+            var commit = commits[0];
             var treeNode = new Gh3.Tree(githubBlog, commit.tree.sha);
             tree.push(treeNode);
             //treeNode.fetchContent(fetchTreeNode);
