@@ -61,7 +61,7 @@ $(function() {
               date_added: res.date
             };
             var post = Mustache.to_html(template, data);
-            $("posts-anchor").append($(post));
+            $("#posts-anchor").append($(post));
           }
           if (commits.length > 0) {
             commits[0].fetchContents(fetchCommitInfo);
