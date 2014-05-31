@@ -506,7 +506,7 @@
 			that.files = [];
 
 			Gh3.Helper.callHttpApi({
-				service : that.url,
+				url : that.url,
 				data : {},
 				success : function(res) {
 					that.stats = res.data.stats;
