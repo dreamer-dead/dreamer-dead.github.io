@@ -1,9 +1,0 @@
-[submodule "js/mustache"]
-	path = js/mustache
-	url = https://github.com/janl/mustache.js.git
-[submodule "js/oauth"]
-	path = js/oauth
-	url = https://github.com/oauth-io/oauth-js.git
-[submodule "js/gh3"]
-	path = js/gh3
-	url = git@github.com:dreamer-dead/gh3.git
