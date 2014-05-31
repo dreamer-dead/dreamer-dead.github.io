@@ -16,31 +16,22 @@
   {{/posts}}
 </script>
 
+<script id="post-template" type="text/template">
+  <li>
+    <div>{{title}} ({{date_added}})</div>
+    <div>{{content}}</div>
+  </li>
+</script>
+
 <script>
-function fetchBranchCommits(branch, callback) {
-  branch.commits = [];
-
-  Gh3.Helper.callHttpApi({
-    service : "repos/"+branch.user.login+"/"+branch.repositoryName+"/commits",
-    data : {sha: branch.sha },
-    success : function(res) {
-      _.each(res.data, function (commit) {
-        branch.commits.push(new Gh3.Commit(commit));
-      });
-      if (callback) callback(null, that);
-    },
-    error : function (res) {
-      if (callback) callback(new Error(res.responseJSON.message),res);
-    }
-  });
-}
-
 $(function() {
+  /*
   $.getJSON('/content/posts.json', function(data) {
       var template = $('#blog-template').html();
       var info = Mustache.to_html(template, data);
       $('#blog-anchor').html(info);
   });
+  //*/
 
   var fetchCommits = function (userName, repoName, branchName) {
     var githubUser = new Gh3.User(userName);
@@ -54,15 +45,36 @@ $(function() {
 
         var branch = githubBlog.getBranchByName(branchName);
         console.log(branch.name + "(" + branch.sha + ")");
-        $("blog-title").text("Welcome to " + githubUser.login + "'s blog!");
+        $("blog-title").html("Welcome to " + githubUser.login + "'s blog!");
         var fetchCommitsCallback = function (err, res) {
           if (err) throw "fetchCommits error!" + err;
 
           var commits = branch.commits;
           console.log(commits);
+          var tree = [];
+          var fetchTreeNode = function(commit, err, res) {
+            if (err) throw "fetchTreeNode error!" + err;
+
+            var template = $('#post-template').html();
+            var data = {
+              title: treeCommit.message,
+              content: res.contents[0].path,
+              date_added: treeCommit.date
+            };
+            var post = Mustache.to_html(template, data);
+            $("posts-anchor").append(post);
+          }
+          for (id in commits) {
+            var commit = commits[id];
+            var treeNode = new Gh3.Tree(githubBlog, commit.tree.sha);
+            tree.push(treeNode);
+            //treeNode.fetchContent(fetchTreeNode);
+            treeNode.fetchContent(function(err, res) {
+              fetchTreeNode(commit, err, res);
+            });
+          }
         }
 
-        //fetchBranchCommits(branch, fetchCommitsCallback);
         branch.fetchCommits(fetchCommitsCallback);
       }
 
@@ -79,6 +91,9 @@ $(function() {
 <body>
   <h1 id="blog-title" ></h1>
   <br/>
-  <div id="blog-anchor"/>
+  <div id="blog-anchor">
+    <ul id="posts-anchor">
+    </ul>
+  </div>
 </body>
 </html>
