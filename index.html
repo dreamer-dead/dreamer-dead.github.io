@@ -45,7 +45,7 @@ $(function() {
 
         var branch = githubBlog.getBranchByName(branchName);
         console.log(branch.name + "(" + branch.sha + ")");
-        $("blog-title").html("Welcome to " + githubUser.login + "'s blog!");
+        $("#blog-title").html("Welcome to " + githubUser.login + "'s blog!");
         var fetchCommitsCallback = function (err, res) {
           if (err) throw "fetchCommits error!" + err;
 
