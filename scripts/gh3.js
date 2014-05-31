@@ -641,7 +641,7 @@
 
 	},{});
 
-	Gh3.Tree = = Kind.extend({
+	Gh3.Tree = Kind.extend({
     constructor : function (repo, sha, url) {
     	if (repo)
     		this.repo = repo;
