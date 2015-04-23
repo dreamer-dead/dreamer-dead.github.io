@@ -5,7 +5,7 @@
     function work() {
       var var_iframe = document.getElementById('subframe')
       var h = var_iframe.contentDocument.createElement('h1');
-      h.innerText = 'Some text';
+      h.innerHtml = 'Some text';
       var_iframe.contentDocument.body.appendChild(h);
     }
   </script>
