@@ -1,6 +1,17 @@
 <!doctype html>
 <html>
+<head>
+  <script>
+    function work() {
+      var var_iframe = document.getElementById('subframe')
+      var h = var_iframe.contentDocument.createElement('h1');
+      h.innerText = 'Some text';
+      var_iframe.contentDocument.body.appendChild(h);
+    }
+  </script>
+</head>
 <body style='margin:0px'>
+<input type='button' click='work()' value='work' />
 <div id='main_frame_content' style='width:100px; height:100px'></div>
 <iframe id='subframe' src='image-subframe.html'></iframe>
 </body>
